@@ -58,11 +58,27 @@ module HidApi
     end
 
     def get_feature_report(data)
-      raise NotImplementedError
+      buffer = clear_buffer data.length
+      case data
+      when String then buffer.put_bytes 0, data
+      when Array then buffer.put_array_of_char 0, data
+      end
+
+      with_hid_error_handling do
+        HidApi.hid_get_feature_report self, buffer, buffer.length
+      end
     end
 
     def send_feature_report(data)
-      raise NotImplementedError
+      buffer = clear_buffer data.length
+      case data
+      when String then buffer.put_bytes 0, data
+      when Array then buffer.put_array_of_char 0, data
+      end
+
+      with_hid_error_handling do
+        HidApi.hid_send_feature_report self, buffer, buffer.length
+      end
     end
 
     def error
