@@ -15,7 +15,7 @@ module HidApi
       FORMAT = FORMATS[WCHAR_T_WIDTH].freeze
 
       # Maps a WCHAR_T_WIDTH to the corresponding string encoding
-      ENCODING = {
+      ENCODINGS = {
         2 => "utf-16le",
         4 => "utf-32le"
       }.freeze
