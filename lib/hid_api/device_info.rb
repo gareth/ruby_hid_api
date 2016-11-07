@@ -1,4 +1,4 @@
-require 'ffi'
+require "ffi"
 
 module HidApi
   # Represents the hid_device_info struct returned as part of
@@ -36,7 +36,7 @@ module HidApi
 
     def inspect
       product_string.tap do |s|
-        s << " (%s)" % path unless path.empty?
+        s << format(" (%s)", path) unless path.empty?
       end
     end
 

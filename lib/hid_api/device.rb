@@ -1,11 +1,13 @@
-require 'ffi'
+require "ffi"
 
 module HidApi
+  # An FFI pointer extended to expose HID device functionality
   class Device < FFI::Pointer
+    extend Deprecated
     extend FFI::DataConverter
     native_type FFI::Type::POINTER
 
-    def self.from_native(value, ctx)
+    def self.from_native(value, _ctx)
       new(value)
     end
 
@@ -13,21 +15,25 @@ module HidApi
       HidApi.hid_close(self)
     end
 
-    def set_nonblocking(int)
+    def nonblocking=(int)
       HidApi.hid_set_nonblocking self, int
     end
+    deprecated_alias :set_nonblocking, :nonblocking=
 
-    def get_manufacturer_string
+    def manufacturer_string
       get_buffered_string :manufacturer
     end
+    deprecated_alias :get_manufacturer_string, :manufacturer_string
 
-    def get_product_string
+    def product_string
       get_buffered_string :product
     end
+    deprecated_alias :get_product_string, :product_string
 
-    def get_serial_number_string
+    def serial_number_string
       get_buffered_string :serial_number
     end
+    deprecated_alias :get_serial_number_string, :serial_number_string
 
     def read(length)
       buffer = clear_buffer length
@@ -57,11 +63,11 @@ module HidApi
       end
     end
 
-    def get_feature_report(data)
+    def get_feature_report(_data)
       raise NotImplementedError
     end
 
-    def send_feature_report(data)
+    def send_feature_report(_data)
       raise NotImplementedError
     end
 
@@ -72,14 +78,15 @@ module HidApi
     end
 
     private
-    def clear_buffer length
+
+    def clear_buffer(length)
       b = FFI::Buffer.new(1, length)
       # FFI::Buffer doesn't clear the first byte if length < 8
       b.put_char 0, 0
       b
     end
 
-    def get_buffered_string field
+    def get_buffered_string(field)
       buffer = clear_buffer 255
       HidApi.send "hid_get_#{field}_string", self, buffer, buffer.length
       buffer.read_wchar_string

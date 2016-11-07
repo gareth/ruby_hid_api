@@ -1,16 +1,18 @@
-require 'ffi'
+require "ffi"
 
+# A Ruby wrapper around the C `hidapi` library
 module HidApi
   class HidError < StandardError; end
 
   extend FFI::Library
-  ffi_lib 'hidapi'
+  ffi_lib "hidapi"
 
-  autoload :Device,     'hid_api/device'
-  autoload :DeviceInfo, 'hid_api/device_info'
-  autoload :Util,       'hid_api/util'
-  autoload :VERSION,    'hid_api/version'
-  autoload :WideString, 'hid_api/wide_string'
+  autoload :Deprecated, "hid_api/deprecated"
+  autoload :Device,     "hid_api/device"
+  autoload :DeviceInfo, "hid_api/device_info"
+  autoload :Util,       "hid_api/util"
+  autoload :VERSION,    "hid_api/version"
+  autoload :WideString, "hid_api/wide_string"
 
   typedef DeviceInfo.auto_ptr, :hid_device_info
   typedef WideString, :wide_string
@@ -46,13 +48,19 @@ module HidApi
     alias exit hid_exit
     alias enumerate hid_enumerate
     alias free_enumeration hid_free_enumeration
-    def open vendor_id, product_id, serial_number=nil
+    def open(vendor_id, product_id, serial_number = nil)
       device = hid_open(vendor_id, product_id, serial_number || 0)
-      raise HidError, "Unable to open #{[vendor_id, product_id, serial_number].inspect}" if device.null?
+      if device.null?
+        error = format(
+          "Unable to open %s",
+          [vendor_id, product_id, serial_number].inspect
+        )
+        raise HidError, error
+      end
       device
     end
 
-    def open_path path
+    def open_path(path)
       device = hid_open_path(path)
       raise HidError, "Unable to open #{path.inspect}" if device.null?
       device

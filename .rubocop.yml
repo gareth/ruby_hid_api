@@ -1,0 +1,26 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  TargetRubyVersion: 2.3
+
+Metrics/LineLength:
+  Max: 90
+
+# This cop is enabled when TargetRubyVersion is 2.3 or higher
+#
+# Implementing its advice will help with Ruby 3.0 compatibility, but isn't a
+# trivial change, and could cause problems before gems are updated to properly
+# handle frozen strings.
+#
+# See: https://wyeworks.com/blog/2015/12/1/immutable-strings-in-ruby-2-dot-3
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  StyleGuide: https://www.viget.com/articles/just-use-double-quoted-ruby-strings
+
+# This is one part of the style guide that doesn't express a preference, it just
+# suggests you make a choice
+Style/DotPosition:
+  EnforcedStyle: trailing

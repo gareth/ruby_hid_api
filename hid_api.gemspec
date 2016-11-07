@@ -1,7 +1,7 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'hid_api/version'
+require "hid_api/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "hid_api"
@@ -10,11 +10,13 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Gareth Adams"]
   spec.email         = ["g@rethada.ms"]
 
-  spec.summary       = %q{A Ruby FFI wrapper around the System11 hidapi C library}
-  spec.description   = %q{}
+  spec.summary       = "A Ruby FFI wrapper around the System11 hidapi C library"
+  spec.description   = ""
   spec.homepage      = "https://github.com/gareth/ruby_hid_api"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
