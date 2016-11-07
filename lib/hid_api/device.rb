@@ -10,7 +10,7 @@ module HidApi
     end
 
     def close
-      HidApi.close(self)
+      HidApi.hid_close(self)
     end
 
     def set_nonblocking(int)
