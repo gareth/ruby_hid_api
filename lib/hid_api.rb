@@ -5,7 +5,11 @@ module HidApi
   class HidError < StandardError; end
 
   extend FFI::Library
-  ffi_lib "hidapi"
+  begin
+    ffi_lib "hidapi"
+  rescue LoadError
+    ffi_lib "hidapi-libusb" # ubuntu
+  end
 
   autoload :Deprecated, "hid_api/deprecated"
   autoload :Device,     "hid_api/device"
