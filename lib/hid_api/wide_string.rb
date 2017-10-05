@@ -9,7 +9,7 @@ module HidApi
 
     class << self
       def from_native(value, _context)
-        return nil if value.null?
+        return nil if value.nil?
         value.read_wchar_string
       end
     end
