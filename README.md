@@ -10,7 +10,13 @@ This gem is my first attempt at writing any FFI code, and my first attempt to us
 
 The gem requires the hidapi library to be installed and available to Ruby. On Mac with homebrew installed, this can be done with the command:
 
+### For macOS
+
     $ brew install hidapi
+
+### For Debian
+
+    $ sudo apt install libhidapi-dev libhidapi-hidraw0 libhidapi-libusb0
 
 ## Installation
 
