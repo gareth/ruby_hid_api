@@ -4,8 +4,10 @@ require "ffi"
 module HidApi
   class HidError < StandardError; end
 
+  HIDAPI_LIBS = %w(hidapi hidapi-libusb hidapi-hidraw).freeze
+
   extend FFI::Library
-  ffi_lib "hidapi"
+  ffi_lib HIDAPI_LIBS
 
   autoload :Deprecated, "hid_api/deprecated"
   autoload :Device,     "hid_api/device"
