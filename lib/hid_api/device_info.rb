@@ -28,7 +28,7 @@ module HidApi
             :next,                DeviceInfo.auto_ptr # struct hid_device_info * next
 
     # Makes the struct members available as methods
-    layout.members.each do |f|
+    members.each do |f|
       define_method(f) do
         self[f]
       end
