@@ -86,7 +86,7 @@ module HidApi
     def get_buffered_string(field)
       buffer = clear_buffer 255
       HidApi.send "hid_get_#{field}_string", self, buffer, buffer.size
-      FfiWideChar.read_wide_string buffer
+      WideString.from_native(buffer)
     end
 
     def with_hid_error_handling
