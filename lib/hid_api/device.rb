@@ -38,7 +38,7 @@ module HidApi
     def read(length)
       buffer = clear_buffer length
       with_hid_error_handling do
-        HidApi.hid_read self, buffer, buffer.length
+        HidApi.hid_read self, buffer, buffer.size
       end
       buffer
     end
@@ -46,7 +46,7 @@ module HidApi
     def read_timeout(length, timeout)
       buffer = clear_buffer length
       with_hid_error_handling do
-        HidApi.hid_read_timeout self, buffer, buffer.length, timeout
+        HidApi.hid_read_timeout self, buffer, buffer.size, timeout
       end
       buffer
     end
@@ -59,7 +59,7 @@ module HidApi
       end
 
       with_hid_error_handling do
-        HidApi.hid_write self, buffer, buffer.length
+        HidApi.hid_write self, buffer, buffer.size
       end
     end
 
@@ -80,16 +80,13 @@ module HidApi
     private
 
     def clear_buffer(length)
-      b = FFI::Buffer.new(1, length)
-      # FFI::Buffer doesn't clear the first byte if length < 8
-      b.put_char 0, 0
-      b
+      return FFI::MemoryPointer.new(:char, length)
     end
 
     def get_buffered_string(field)
       buffer = clear_buffer 255
-      HidApi.send "hid_get_#{field}_string", self, buffer, buffer.length
-      buffer.read_wchar_string
+      HidApi.send "hid_get_#{field}_string", self, buffer, buffer.size
+      WideString.from_native(buffer)
     end
 
     def with_hid_error_handling

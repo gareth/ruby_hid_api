@@ -19,7 +19,7 @@ module HidApi
   typedef Device, :device
   typedef :int, :vendor_id
   typedef :int, :product_id
-  typedef :int, :serial_number
+  typedef WideString, :serial_number
   typedef :int, :length
   typedef :int, :timeout
 
@@ -49,7 +49,7 @@ module HidApi
     alias enumerate hid_enumerate
     alias free_enumeration hid_free_enumeration
     def open(vendor_id, product_id, serial_number = nil)
-      device = hid_open(vendor_id, product_id, serial_number || 0)
+      device = hid_open(vendor_id, product_id, serial_number)
       if device.null?
         error = format(
           "Unable to open %s",
@@ -67,6 +67,3 @@ module HidApi
     end
   end
 end
-
-# Attempts to extend some core FFI classes with platform-aware string-handling
-FFI::AbstractMemory.include(HidApi::Util::WCHAR)
